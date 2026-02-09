@@ -1,6 +1,6 @@
 workflows:
   android-workflow:
-    name: Golden Roast Build
+    name: Golden Roast Final Build
     max_build_duration: 60
     instance_type: mac_mini_m1
     scripts:
@@ -8,17 +8,17 @@ workflows:
         script: npm install
       - name: Build web app
         script: npm run build
-      - name: Initialize Android
+      - name: Setup Android with Fixed Java
         script: |
           rm -rf android
           npx cap init "Golden Roast Tycoon" com.goldenroast.tycoon --web-dir dist
           npx cap add android
           npx cap sync android
-      - name: Build APK
+      - name: Build APK (The Final Step)
         script: |
           cd android
           chmod +x gradlew
-          # هنا السر: نترك النظام يختار الجافا بنفسه ونطلب منه فقط البناء
-          ./gradlew assembleDebug
+          # إجبار النظام على استخدام جافا 17 المدمجة في ماكينة Codemagic
+          ./gradlew assembleDebug -Dorg.gradle.java.home=$JAVA_HOME_17
     artifacts:
       - android/app/build/outputs/apk/**/*.apk
