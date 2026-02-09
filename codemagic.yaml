@@ -3,7 +3,12 @@ workflows:
     name: Golden Roast Build
     max_build_duration: 60
     instance_type: mac_mini_m1
+    environment:
+      vars:
+        JAVA_VERSION: "17"
     scripts:
+      - name: Set Java version
+        script: sdk use java 17.0.10-term
       - name: Install dependencies
         script: npm install
       - name: Build web app
