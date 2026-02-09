@@ -1,20 +1,19 @@
-{
-  "$schema": "https://ui.shadcn.com/schema.json",
-  "style": "default",
-  "rsc": false,
-  "tsx": true,
-  "tailwind": {
-    "config": "tailwind.config.ts",
-    "css": "src/index.css",
-    "baseColor": "slate",
-    "cssVariables": true,
-    "prefix": ""
-  },
-  "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
-    "hooks": "@/hooks"
-  }
-}
+workflows:
+  android-workflow:
+    name: Golden Roast Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    scripts:
+      - name: Install dependencies
+        script: npm install
+      - name: Build web app
+        script: npm run build
+      - name: Sync Capacitor
+        script: npx cap sync android
+      - name: Build APK
+        script: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/apk/**/*.apk
