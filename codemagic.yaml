@@ -8,8 +8,10 @@ workflows:
         script: npm install
       - name: Build web app
         script: npm run build
-      - name: Sync Capacitor
-        script: npx cap sync android
+      - name: Initialize Android Folder
+        script: |
+          npx cap add android
+          npx cap sync android
       - name: Build APK
         script: |
           cd android
