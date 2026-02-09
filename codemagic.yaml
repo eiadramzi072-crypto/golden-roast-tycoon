@@ -3,24 +3,13 @@ workflows:
     name: Golden Roast Build
     max_build_duration: 60
     instance_type: mac_mini_m1
-    environment:
-      groups:
-        - java_version
-      vars:
-        JAVA_HOME: /Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home
     scripts:
-      - name: Set Java 17 and Gradle options
-        script: |
-          # إجبار النظام على استخدام جافا 17 وتوسيع ذاكرة البناء
-          echo "export JAVA_HOME=$JAVA_HOME" >> $CM_ENV
-          echo "export GRADLE_OPTS='-Dorg.gradle.jvmargs=-Xmx2048m'" >> $CM_ENV
       - name: Install dependencies
         script: npm install
       - name: Build web app
         script: npm run build
-      - name: Setup Android Platform
+      - name: Initialize Android
         script: |
-          # تنظيف كامل قبل البدء
           rm -rf android
           npx cap init "Golden Roast Tycoon" com.goldenroast.tycoon --web-dir dist
           npx cap add android
@@ -29,7 +18,7 @@ workflows:
         script: |
           cd android
           chmod +x gradlew
-          # إجبار Gradle على استخدام جافا 17 وتجاوز فحص النسخ
-          ./gradlew assembleDebug -Dorg.gradle.java.home=$JAVA_HOME --no-daemon
+          # هنا السر: نترك النظام يختار الجافا بنفسه ونطلب منه فقط البناء
+          ./gradlew assembleDebug
     artifacts:
       - android/app/build/outputs/apk/**/*.apk
