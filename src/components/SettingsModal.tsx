@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Globe, Volume2, VolumeX, Music } from 'lucide-react';
+import { X, Globe, Volume2, VolumeX } from 'lucide-react';
 import { useGame } from '@/contexts/GameContext';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -10,8 +10,8 @@ interface SettingsModalProps {
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
-  const { language, setLanguage, soundEnabled, setSoundEnabled, ambienceEnabled, setAmbienceEnabled } = useGame();
-  const { t, isRtl } = useTranslation();
+  const { language, setLanguage, soundEnabled, setSoundEnabled } = useGame();
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
 
   const handleSignUp = () => {
@@ -96,26 +96,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                   <motion.div
                     className="w-6 h-6 bg-white rounded-full shadow-md"
                     animate={{ x: soundEnabled ? 26 : 4 }}
-                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                  />
-                </button>
-              </div>
-
-              {/* Ambience Toggle */}
-              <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 text-sm font-medium text-foreground">
-                  <Music className="w-4 h-4" />
-                  {t('ambience')}
-                </label>
-                <button
-                  onClick={() => setAmbienceEnabled(!ambienceEnabled)}
-                  className={`w-14 h-8 rounded-full transition-all ${
-                    ambienceEnabled ? 'bg-primary' : 'bg-muted'
-                  }`}
-                >
-                  <motion.div
-                    className="w-6 h-6 bg-white rounded-full shadow-md"
-                    animate={{ x: ambienceEnabled ? 26 : 4 }}
                     transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                   />
                 </button>

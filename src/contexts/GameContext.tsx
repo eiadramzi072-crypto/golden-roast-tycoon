@@ -8,7 +8,6 @@ interface GameState {
   upgradeLevels: Record<string, number>;
   language: Language;
   soundEnabled: boolean;
-  ambienceEnabled: boolean;
   beanHistory: { time: number; beans: number }[];
 }
 
@@ -18,7 +17,6 @@ interface GameContextType extends GameState {
   buyUpgrade: (upgradeId: string) => boolean;
   setLanguage: (lang: Language) => void;
   setSoundEnabled: (enabled: boolean) => void;
-  setAmbienceEnabled: (enabled: boolean) => void;
   canAfford: (upgradeId: string) => boolean;
   getUpgradePrice: (upgradeId: string) => number;
 }
@@ -29,7 +27,6 @@ const defaultState: GameState = {
   upgradeLevels: {},
   language: 'en',
   soundEnabled: true,
-  ambienceEnabled: true,
   beanHistory: [],
 };
 
@@ -152,9 +149,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setState(prev => ({ ...prev, soundEnabled: enabled }));
   }, []);
 
-  const setAmbienceEnabled = useCallback((enabled: boolean) => {
-    setState(prev => ({ ...prev, ambienceEnabled: enabled }));
-  }, []);
 
   // Set initial direction
   useEffect(() => {
@@ -168,7 +162,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     buyUpgrade,
     setLanguage,
     setSoundEnabled,
-    setAmbienceEnabled,
     canAfford,
     getUpgradePrice,
   };

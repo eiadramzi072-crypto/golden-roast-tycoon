@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useGame } from '@/contexts/GameContext';
 
 // Audio URLs - using free sound effects
@@ -6,33 +6,7 @@ const CLICK_SOUND = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AA
 const PURCHASE_SOUND = 'data:audio/wav;base64,UklGRl9vAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhO28AAHd3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3d3';
 
 export const useAudio = () => {
-  const { soundEnabled, ambienceEnabled, bps } = useGame();
-  const clickAudioRef = useRef<HTMLAudioElement | null>(null);
-  const purchaseAudioRef = useRef<HTMLAudioElement | null>(null);
-  const ambienceAudioRef = useRef<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    clickAudioRef.current = new Audio(CLICK_SOUND);
-    clickAudioRef.current.volume = 0.3;
-    
-    purchaseAudioRef.current = new Audio(PURCHASE_SOUND);
-    purchaseAudioRef.current.volume = 0.4;
-    
-    // Create ambient audio with Web Audio API for a coffee shop atmosphere
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    
-    return () => {
-      audioContext.close();
-    };
-  }, []);
-
-  // Adjust ambience volume based on BPS
-  useEffect(() => {
-    if (ambienceAudioRef.current) {
-      const volume = ambienceEnabled ? Math.min(0.3 + (bps / 100) * 0.2, 0.5) : 0;
-      ambienceAudioRef.current.volume = volume;
-    }
-  }, [bps, ambienceEnabled]);
+  const { soundEnabled } = useGame();
 
   const playClick = useCallback(() => {
     if (!soundEnabled) return;
