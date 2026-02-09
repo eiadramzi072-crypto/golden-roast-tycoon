@@ -4,15 +4,20 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m1
     scripts:
-      - name: Set Java 17
+      - name: Force Java 17
         script: |
+          # هذه الأسطر تجبر النظام تقنياً على التحويل لجافا 17
           echo "export JAVA_HOME=$JAVA_HOME_17" >> $CM_ENV
+          export JAVA_HOME=$JAVA_HOME_17
+          java -version
       - name: Install dependencies
         script: npm install
       - name: Build web app
         script: npm run build
       - name: Setup Android Platform
         script: |
+          # حذف أي إعدادات قديمة مسببة للمشاكل
+          rm -rf android
           npx cap init "Golden Roast Tycoon" com.goldenroast.tycoon --web-dir dist
           npx cap add android
           npx cap sync android
@@ -20,6 +25,7 @@ workflows:
         script: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          # إخبار عملية البناء باستخدام جافا 17 حصراً
+          ./gradlew assembleDebug -Dorg.gradle.java.home=$JAVA_HOME_17
     artifacts:
       - android/app/build/outputs/apk/**/*.apk
