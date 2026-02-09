@@ -1,0 +1,9 @@
+{
+  "appId": "app.lovable.0d16b5be4f8f450d94c66fb84ee878ab",
+  "appName": "Coffee Empire Tycoon",
+  "webDir": "dist",
+  "server": {
+    "url": "https://0d16b5be-4f8f-450d-94c6-6fb84ee878ab.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  }
+}
